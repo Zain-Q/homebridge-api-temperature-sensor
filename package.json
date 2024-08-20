@@ -1,6 +1,6 @@
 {
   "name": "homebridge-temperature-sensor-api",
-  "version": "0.1",
+  "version": "1.0",
   "description": "Get the temperature level by calling the url.",
   "keywords": [
     "homebridge-plugin",

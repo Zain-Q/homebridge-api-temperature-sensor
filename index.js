@@ -37,7 +37,7 @@ class TemperatureSensorAccessory {
     this.log.debug('Triggered GET CurrentTemperature');
 
     try {
-      const response = await axios.get('http://192.168.100.4/temperature');
+      const response = await axios.get('http://192.168.100.4/temperature', { timeout: 10000 });
       this.log.debug('Response from HTTP request:', response.data);
 
       // Ensure the response data is a valid number
@@ -56,7 +56,7 @@ class TemperatureSensorAccessory {
 
   async updateTemperature() {
     try {
-      const response = await axios.get('http://192.168.100.4/temperature');
+      const response = await axios.get('http://192.168.100.4/temperature', { timeout: 10000 });
       this.log.debug('Response from HTTP request:', response.data);
 
       // Ensure the response data is a valid number
