@@ -1,4 +1,6 @@
 const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = (api) => {
   api.registerAccessory('TemperatureSensorPlugin', TemperatureSensorAccessory);
@@ -9,13 +11,12 @@ class TemperatureSensorAccessory {
   constructor(log, config, api) {
     this.log = log;
     this.config = config;
+    this.name = config.name;
     this.api = api;
+    this.temperatureUrl = config.temperatureUrl;
 
     this.Service = this.api.hap.Service;
     this.Characteristic = this.api.hap.Characteristic;
-
-    // extract name from config
-    this.name = config.name;
 
     // create a new Temperature Sensor service
     this.service = new this.Service.TemperatureSensor(this.name);
@@ -37,7 +38,7 @@ class TemperatureSensorAccessory {
     this.log.debug('Triggered GET CurrentTemperature');
 
     try {
-      const response = await axios.get('http://192.168.100.4/temperature', { timeout: 10000 });
+      const response = await axios.get(this.temperatureUrl, { timeout: 10000 });
       this.log.debug('Response from HTTP request:', response.data);
 
       // Ensure the response data is a valid number
@@ -56,7 +57,7 @@ class TemperatureSensorAccessory {
 
   async updateTemperature() {
     try {
-      const response = await axios.get('http://192.168.100.4/temperature', { timeout: 10000 });
+      const response = await axios.get(this.temperatureUrl, { timeout: 10000 });
       this.log.debug('Response from HTTP request:', response.data);
 
       // Ensure the response data is a valid number
@@ -79,4 +80,3 @@ class TemperatureSensorAccessory {
     return [this.service];
   }
 }
-
